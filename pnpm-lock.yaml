@@ -89,6 +89,9 @@ dependencies:
   '@radix-ui/react-tooltip':
     specifier: ^1.1.6
     version: 1.1.6(@types/react-dom@19.0.2)(@types/react@19.0.1)(react-dom@19.0.0)(react@19.0.0)
+  '@tiptap/extension-font-family':
+    specifier: ^2.11.0
+    version: 2.11.0(@tiptap/core@2.11.0)(@tiptap/extension-text-style@2.11.0)
   '@tiptap/extension-image':
     specifier: ^2.11.0
     version: 2.11.0(@tiptap/core@2.11.0)
@@ -108,6 +111,12 @@ dependencies:
     specifier: ^2.11.0
     version: 2.11.0(@tiptap/core@2.11.0)(@tiptap/pm@2.11.0)
   '@tiptap/extension-task-list':
+    specifier: ^2.11.0
+    version: 2.11.0(@tiptap/core@2.11.0)
+  '@tiptap/extension-text-style':
+    specifier: ^2.11.0
+    version: 2.11.0(@tiptap/core@2.11.0)
+  '@tiptap/extension-underline':
     specifier: ^2.11.0
     version: 2.11.0(@tiptap/core@2.11.0)
   '@tiptap/pm':
@@ -182,6 +191,9 @@ dependencies:
   zod:
     specifier: ^3.24.1
     version: 3.24.1
+  zustand:
+    specifier: ^5.0.3
+    version: 5.0.3(@types/react@19.0.1)(react@19.0.0)
 
 devDependencies:
   '@eslint/eslintrc':
@@ -2250,6 +2262,16 @@ packages:
       tippy.js: 6.3.7
     dev: false
 
+  /@tiptap/extension-font-family@2.11.0(@tiptap/core@2.11.0)(@tiptap/extension-text-style@2.11.0):
+    resolution: {integrity: sha512-INWMTxMe87rz3fAXPrv2xJdJNtfOvAjguNOwM8Z4y8ge9o055l12533rhjTfkmR37ulwEuXM+yRKzyj7roFP8g==}
+    peerDependencies:
+      '@tiptap/core': ^2.7.0
+      '@tiptap/extension-text-style': ^2.7.0
+    dependencies:
+      '@tiptap/core': 2.11.0(@tiptap/pm@2.11.0)
+      '@tiptap/extension-text-style': 2.11.0(@tiptap/core@2.11.0)
+    dev: false
+
   /@tiptap/extension-gapcursor@2.11.0(@tiptap/core@2.11.0)(@tiptap/pm@2.11.0):
     resolution: {integrity: sha512-1TVOthPkUYwTQnQwP0BzuIHVz09epOiXJQ3GqgNZsmTehwcMzz2vGCpx1JXhZ5DoMaREHNLCdraXb1n2FdhDNA==}
     peerDependencies:
@@ -2406,6 +2428,14 @@ packages:
 
   /@tiptap/extension-text@2.11.0(@tiptap/core@2.11.0):
     resolution: {integrity: sha512-LcyrP+7ZEVx3YaKzjMAeujq+4xRt4mZ3ITGph2CQ4vOKFaMI8bzSR909q18t7Qyyvek0a9VydEU1NHSaq4G5jw==}
+    peerDependencies:
+      '@tiptap/core': ^2.7.0
+    dependencies:
+      '@tiptap/core': 2.11.0(@tiptap/pm@2.11.0)
+    dev: false
+
+  /@tiptap/extension-underline@2.11.0(@tiptap/core@2.11.0):
+    resolution: {integrity: sha512-DE1piq441y1+9Aj1pvvuq1dcc5B2HZ2d1SPtO4DTMjCxrhok12biTkMxxq0q1dzA5/BouLlUW6WTPpinhmrUWA==}
     peerDependencies:
       '@tiptap/core': ^2.7.0
     dependencies:
@@ -5754,4 +5784,26 @@ packages:
 
   /zod@3.24.1:
     resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
+    dev: false
+
+  /zustand@5.0.3(@types/react@19.0.1)(react@19.0.0):
+    resolution: {integrity: sha512-14fwWQtU3pH4dE0dOpdMiWjddcH+QzKIgk1cl8epwSE7yag43k/AD/m4L6+K7DytAOr9gGBe3/EXj9g7cdostg==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=18.0.0'
+      immer: '>=9.0.6'
+      react: '>=18.0.0'
+      use-sync-external-store: '>=1.2.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+      use-sync-external-store:
+        optional: true
+    dependencies:
+      '@types/react': 19.0.1
+      react: 19.0.0
     dev: false
