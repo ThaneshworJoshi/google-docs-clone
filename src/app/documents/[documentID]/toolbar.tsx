@@ -7,6 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@radix-u
 import { 
     BoldIcon,
     ChevronDownIcon,
+    HighlighterIcon,
     ItalicIcon,
     ListTodoIcon,
     LucideIcon,
@@ -19,6 +20,7 @@ import {
     Undo2Icon
 } from "lucide-react";
 import { Level } from "@tiptap/extension-heading";
+import { type ColorResult, SketchPicker } from "react-color";
 
 const HeadingLevelButton = () => {
     const { editor } = useEditorStore();
@@ -115,6 +117,51 @@ const FontFamilyButton = () => {
       </DropdownMenu>
     )
 }
+
+const TextColorButton = () => {
+    const { editor } = useEditorStore();
+    const value = editor?.getAttributes("textStyle").color || "#000000";
+    
+    const onChange = (color: ColorResult) => {
+        editor?.chain().focus().setColor(color.hex).run();
+    }
+
+    
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <button className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-between rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
+                    <span className="text-sm">A</span>
+                    <div className="h-0.5 w-full" style={{ backgroundColor: value}} />
+                </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="p-2.5">
+                <SketchPicker color={value} onChange={onChange}/>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    )
+}
+const HighlightColorButton = () => {
+    const { editor } = useEditorStore();
+    const  value = editor?.getAttributes("highlight").color || "#FFFFFF";
+
+    const onChange = (color: ColorResult) => {
+        editor?.chain().focus().setHighlight({ color: color.hex }).run();
+    }
+    
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <button className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-between rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
+                    <HighlighterIcon className="size-4"/>
+                </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="p-2.5">
+                <SketchPicker color={value} onChange={onChange}/>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    )
+}
 interface ToolbarButtonProps {
     onClick?: () => void;
     isActive?: boolean;
@@ -130,7 +177,7 @@ const ToolbarButton = ({ onClick,
         <button
             onClick={onClick}
             disabled={disabled}
-            className={cn("text-sm h-7 min-w-4 flex items-center justify-center rounded-sm hover:bg-neutral-200/80", isActive && "bg-neutral-200/80")}
+            className={cn("text-sm h-7 min-w-7 flex items-center justify-center rounded-sm hover:bg-neutral-200/80", isActive && "bg-neutral-200/80")}
         >
             <Icon className="size-4"/>
         </button>
@@ -235,7 +282,9 @@ const Toolbar: React.FC = () => {
             <Separator orientation="vertical" className="h-6 bg-neutral-300"/>
 
             {/* TODO: Text color */}
+            <TextColorButton />
             {/* TODO: Highlight color */}
+            <HighlightColorButton />
             {/* TODO: Link */}
             {/* TODO: Image */}
             {/* TODO: Aligh */}
