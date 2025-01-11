@@ -4,11 +4,20 @@ import { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { useEditorStore } from "@/store/use-editior-store";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+  } from "@/components/ui/dialog"  
 import { 
     BoldIcon,
     ChevronDownIcon,
     HighlighterIcon,
+    ImageIcon,
     ItalicIcon,
     Link2Icon,
     ListTodoIcon,
@@ -17,9 +26,11 @@ import {
     PrinterIcon,
     Redo2Icon,
     RemoveFormattingIcon,
+    SearchIcon,
     SpellCheckIcon,
     UnderlineIcon,
-    Undo2Icon
+    Undo2Icon,
+    UploadIcon
 } from "lucide-react";
 import { Level } from "@tiptap/extension-heading";
 import { type ColorResult, SketchPicker } from "react-color";
@@ -201,6 +212,82 @@ const LinkButton = () => {
 
 }
 
+
+const ImageButton = () => {
+    const { editor } = useEditorStore();
+    const [imageUrl, setImageUrl] = useState<string>("");  
+    const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+
+    const onChange = (src: string) => {
+        editor?.chain().focus().setImage({ src }).run();
+        setImageUrl(src);
+    }
+
+    const onUpload = () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+
+        input.onchange = (e) => {
+            const file = (e.target as HTMLInputElement).files?.[0];
+            if(file) {
+                const imageUrl = URL.createObjectURL(file);
+                onChange(imageUrl)
+            }
+        }
+
+        input.click();
+    }
+
+    const handleImageUrlSubmit = () => {
+        if(imageUrl) {
+            onChange(imageUrl);
+            setImageUrl("");
+            setIsDialogOpen(false);
+        }
+    }
+    
+    return(
+        <>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <button className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
+                        <ImageIcon className="size-4"/>
+                    </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="p-2 rounded-sm border bg-white z-10 cursor-pointer">
+                    <DropdownMenuItem className="flex" onClick={onUpload}>
+                        <UploadIcon className="size-4 mr-3"/> Upload
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="flex" onClick={() => setIsDialogOpen(true)}>
+                        <SearchIcon className="size-4 mr-3"/> Paste image url
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Insert image url</DialogTitle>
+                    </DialogHeader>
+                    <DialogDescription className="">
+                        <Input 
+                            placeholder="https://example.com/image.jpg"
+                            value={imageUrl}
+                            onChange={(e) => setImageUrl(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleImageUrlSubmit()}
+                        />
+                    </DialogDescription>
+                    <DialogFooter>
+                        <Button onClick={handleImageUrlSubmit}>Insert</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        </>
+    )
+
+}
+
 interface ToolbarButtonProps {
     onClick?: () => void;
     isActive?: boolean;
@@ -327,6 +414,7 @@ const Toolbar: React.FC = () => {
             {/* TODO: Link */}
             <LinkButton />
             {/* TODO: Image */}
+            <ImageButton />
             {/* TODO: Aligh */}
             {/* TODO: Line height */}
             {

@@ -17,8 +17,6 @@ import Highlight from '@tiptap/extension-highlight'
 import { Color } from '@tiptap/extension-color'
 import Link from '@tiptap/extension-link'
 
-
-
 import { useEditorStore } from '@/store/use-editior-store';
 
 export const Editor = () => {
