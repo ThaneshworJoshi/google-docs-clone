@@ -15,6 +15,8 @@ import FontFamily from '@tiptap/extension-font-family'
 import TextStyle from '@tiptap/extension-text-style'
 import Highlight from '@tiptap/extension-highlight'
 import { Color } from '@tiptap/extension-color'
+import Link from '@tiptap/extension-link'
+
 
 
 import { useEditorStore } from '@/store/use-editior-store';
@@ -71,7 +73,12 @@ export const Editor = () => {
             TableCell,
             Underline,
             Highlight.configure({ multicolor: true }),
-            Color
+            Color,
+            Link.configure({
+                openOnClick: false,
+                autolink: true,
+                defaultProtocol: 'https',            
+              }),
         ],
         content: `
         <table>
@@ -91,7 +98,7 @@ export const Editor = () => {
       })
 
     return (
-        <div className='size-full overflow-x-auto bg-[#F9FBFD] px-4 pring:p-0 print:bg-white print:overflow-visible'>
+        <div className='size-full overflow-x-auto bg-[#F9FBFD] px-4 pring:p-0 print:bg-white print:overflow-visible z-auto'>
             <div className='min-w-max flex justify-center w-[816px] py-4 print:py-0 mx-auto print:w-full print:min-w-0'>
                 <EditorContent editor={editor} />
             </div>
