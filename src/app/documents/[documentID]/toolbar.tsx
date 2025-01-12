@@ -28,6 +28,8 @@ import {
     ListTodoIcon,
     LucideIcon,
     MessageSquarePlusIcon,
+    MinusIcon,
+    PlusIcon,
     PrinterIcon,
     Redo2Icon,
     RemoveFormattingIcon,
@@ -227,6 +229,89 @@ const ListButton = () => {
             </DropdownMenuContent>
         </DropdownMenu>
     )
+}
+
+
+const FontSizeButton = () => {
+    const { editor } = useEditorStore();
+   
+    
+    const currentFontSize = editor?.getAttributes("textStyle").fontSize || '16px';
+    
+    const [fontSize, setFontSize ] = useState<string>(currentFontSize);
+    const [inputValue, setInputValue] = useState<string>(currentFontSize);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+
+    const updateFontSize = (newSize: string) => {
+        const size = parseInt(newSize);
+
+        if (!isNaN(size) && size > 0) {
+            editor?.chain().focus().setFontSize(`${size}px`).run();
+            setFontSize(`${size}px`); 
+            setInputValue(newSize)
+            setIsEditing(false);
+        }
+    } 
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValue(event.target.value);
+    }
+
+    const handleInputBlur = () => {
+        updateFontSize(inputValue);
+    }
+
+    const hanldeKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if(event.key === "Enter") {
+            event.preventDefault();
+            updateFontSize(inputValue);
+            editor?.commands.focus();
+        }
+    }
+
+    const increment = () => {
+        const size = parseInt(inputValue) + 1;
+        updateFontSize(`${size}`);
+    }
+
+    const decrement = () => {
+        const size = parseInt(inputValue) - 1;
+        if(size > 0) {  
+            updateFontSize(`${size}`);
+        }
+    }
+
+    return (
+        <div className="flex items-center gap-x-0.5"> 
+            <button className="h-7 w-7 shrink-0 flex items-center justify-center rounded-sm hover:bg-neutral-200/80">
+                <MinusIcon className="size-4" onClick={decrement}/>
+            </button>
+
+            {
+                isEditing ? (
+                    <input 
+                        type="text"
+                        value={inputValue}
+                        onChange={handleInputChange}
+                        onBlur={handleInputBlur}
+                        onKeyDown={hanldeKeyDown}
+                        className="h-7 w-10 text-sm rounded-sm border border-neutral-400 text-center bg-transparent focus:outline-none focus:rign-0"
+                    />
+                ) : (
+                    <button
+                        className="h-7 w-10 text-sm rounded-sm border border-neutral-400 text-center bg-transparent focus:outline-none cursor-text"
+                        onClick={() => setIsEditing(true)}
+                        style={{fontSize: currentFontSize}}
+                    >
+                        <span className="text-sm">{fontSize}</span>
+                    </button>
+                )
+            }
+             <button className="h-7 w-7 shrink-0 flex items-center justify-center rounded-sm hover:bg-neutral-200/80">
+                <PlusIcon className="size-4" onClick={increment}/>
+            </button>
+        </div>
+    );
 }
 
 
@@ -486,7 +571,9 @@ const Toolbar: React.FC = () => {
             {/* TODO: Heading */}
             <Separator orientation="vertical" className="h-6 bg-neutral-300"/>
             <HeadingLevelButton />
+            <Separator orientation="vertical" className="h-6 bg-neutral-300"/>
             {/* TODO: Font size */}
+            <FontSizeButton />
             <Separator orientation="vertical" className="h-6 bg-neutral-300"/>
             {
                 sections[1].map((item) => (
@@ -494,13 +581,13 @@ const Toolbar: React.FC = () => {
                 ))
             }
 
-            <Separator orientation="vertical" className="h-6 bg-neutral-300"/>
 
             {/* TODO: Text color */}
             <TextColorButton />
             {/* TODO: Highlight color */}
             <HighlightColorButton />
-            {/* TODO: Link */}
+            <Separator orientation="vertical" className="h-6 bg-neutral-300"/>
+            {/* TODO: Link */} 
             <LinkButton />
             {/* TODO: Image */}
             <ImageButton />
