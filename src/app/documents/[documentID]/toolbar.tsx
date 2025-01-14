@@ -526,7 +526,6 @@ const ToolbarButton = ({ onClick,
 const Toolbar: React.FC = () => {
 
     const { editor } = useEditorStore();
-    console.log({editor})
     const sections : {
         label: string;
         icon: LucideIcon;
