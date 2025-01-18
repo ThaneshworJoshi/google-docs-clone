@@ -39,6 +39,7 @@ export const DocumentTable = ({
                         </TableRow>
                     </TableHeader>
 
+                    <TableBody>
                     {documents.length === 0 ? (
                         <TableRow className="hover:bg-transparent">
                             <TableCell colSpan={4} className="h-24 text-center text-muted-foreground ">
@@ -46,12 +47,13 @@ export const DocumentTable = ({
                             </TableCell>
                         </TableRow>
                     ): (
-                        <TableBody>
+                        <>
                             {documents.map((document) => (
                                 <DocumentRow key={document._id} document={document} />
                             ))}
+                        </>
+                        )}
                         </TableBody>
-                    )}
                 </Table>
             )} 
         </div>

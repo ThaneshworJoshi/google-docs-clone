@@ -1,8 +1,9 @@
+import { format } from "date-fns";
+import { useRouter } from "next/navigation";
+import { SiGoogledocs } from "react-icons/si";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Doc } from "../../../convex/_generated/dataModel";
-import { SiGoogledocs } from "react-icons/si";
 import { Building2Icon, CircleUserIcon } from "lucide-react";
-import { format } from "date-fns";
 import { DocumentMenu } from "./document-menu";
 
 interface DocumentRowProps {
@@ -10,12 +11,19 @@ interface DocumentRowProps {
 }
 
 export const DocumentRow = ({ document }: DocumentRowProps) => {
+    const router = useRouter();
+    
     const onNewTabClick = (id: string) => {
         window.open(`/documents/${id}`, "_blank");
     }
 
+    const onRowClick = (id: string) => {
+        router.push(`/documents/${id}`);
+    }
+
     return (
         <TableRow
+            onClick={() => onRowClick(document._id)}
             className="cursor-pointer"
         >
             <TableCell className="w-[50px]">
