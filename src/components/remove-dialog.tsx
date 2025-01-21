@@ -1,19 +1,22 @@
+import { useState } from "react";
+
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-  } from "@/components/ui/alert-dialog";
-  
-  import { Id } from "../../convex/_generated/dataModel";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
+import { Id } from "../../convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { useState } from "react";
+
+import { toast } from "sonner";
   
   interface RemoveDialogProps {
     documentId: Id<"documents">;
@@ -44,7 +47,9 @@ import { useState } from "react";
                     e.stopPropagation();
                     setIsRemoving(true);
                     remove({id: documentId})
-                        .finally(() => setIsRemoving(false));
+                      .catch(() => toast.error("Failed to remove document"))
+                      .then(() => toast.success("Document removed"))
+                      .finally(() => setIsRemoving(false));
                 }}
             >
                 Delete

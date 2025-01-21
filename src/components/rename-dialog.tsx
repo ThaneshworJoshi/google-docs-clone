@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { toast } from "sonner";
+
 import {
   Dialog,
   DialogContent,
@@ -11,7 +14,7 @@ import {
 import { Id } from "../../convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { useState } from "react";
+
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
   
@@ -32,9 +35,9 @@ import { Button } from "./ui/button";
       setIsUpdating(true);
   
       update({ id: documentId, title: title.trim() || "Untitled" })
-        .then(() => {
-          setOpen(false);
-        })
+        .catch(() => toast.error("Failed to remove document"))
+        .then(() => setOpen(false))
+        .then(() => toast.success("Document removed"))
         .finally(() => {
           setIsUpdating(false);
         });

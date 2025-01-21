@@ -1,16 +1,18 @@
-  "use client";
+"use client";
 
-  import { cn } from "@/lib/utils";
-  import { useRouter } from "next/navigation";
-  import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-  } from "@/components/ui/carousel";
-import { templates } from "@/constants/templates";
 import { useState } from "react";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
+import { templates } from "@/constants/templates";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 
@@ -26,6 +28,8 @@ import { api } from "../../../convex/_generated/api";
         .then((documentId)=> {
           router.push(`/documents/${documentId}`)
         })
+        .catch(() => toast.error("Failed to create template"))
+        .then(() => toast.success("Template created"))
         .finally(() => {
           setIsCreating(false);
         })
