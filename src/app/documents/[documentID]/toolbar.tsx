@@ -581,8 +581,8 @@ const Toolbar: React.FC = () => {
             {
                 label: 'Comment',
                 icon: MessageSquarePlusIcon,
-                onClick: () => console.log('Todo: Comment'),
-                isActive: false, // TODO: Enable this functionality
+                onClick: () => editor?.chain().focus().addPendingComment().run(),
+                isActive: editor?.isActive("liveblocksCommentMark"),
             },
             {
                 label: 'List Todo',
