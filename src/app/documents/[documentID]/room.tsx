@@ -9,7 +9,8 @@ import {
 } from "@liveblocks/react/suspense";
 import { useParams } from "next/navigation";
 import { FullscreenLoader } from "@/components/fullscreen-loader";
-import { getUsers } from "./actions";
+import { getDocuments, getUsers } from "./actions";
+import { Id } from "../../../../convex/_generated/dataModel";
 
 type User = {
   id: string;
@@ -38,13 +39,34 @@ export function Room({ children }: { children: ReactNode }) {
   return (
     <LiveblocksProvider
       throttle={16}
-      authEndpoint="/api/liveblocks-auth"
+      authEndpoint={
+        async () => {
+          const endpoint = "/api/liveblocks-auth";
+          const room = params.documentID as string;
+
+          const response = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ room }),
+          });
+          return response.json();
+        }
+      }
       resolveUsers={({ userIds }) => {
         return userIds.map(
           (userId: string) => users.find((user) => user.id === userId)
         );
       }}
-      resolveRoomsInfo={() => []}
+      resolveRoomsInfo={async ({ roomIds }) => {
+        const documents = await getDocuments(roomIds as Id<"documents">[]);
+        return documents.map((document) => ({
+          id: document.id,
+          name: document.name,
+        }));
+      }}
+       
       resolveMentionSuggestions={({ text }) => {
         let filteredUsers = users;
         if (text) {
