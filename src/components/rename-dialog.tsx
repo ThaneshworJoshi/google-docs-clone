@@ -35,9 +35,9 @@ import { Button } from "./ui/button";
       setIsUpdating(true);
   
       update({ id: documentId, title: title.trim() || "Untitled" })
-        .catch(() => toast.error("Failed to remove document"))
+        .catch(() => toast.error("Failed to rename document"))
         .then(() => setOpen(false))
-        .then(() => toast.success("Document removed"))
+        .then(() => toast.success("Document renamed"))
         .finally(() => {
           setIsUpdating(false);
         });
