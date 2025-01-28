@@ -52,7 +52,7 @@ import { api } from "../../../convex/_generated/api";
                       )}>
                         <button
                           disabled={isCreating}
-                          onClick={() => onTemplateClick(template.label, "")} /* TODO: Add proper initial content */
+                          onClick={() => onTemplateClick(template.label, template.initialContent ?? "")}
                           style={{
                             backgroundImage: `url(${template.imageUrl})`,
                             backgroundSize: "cover",

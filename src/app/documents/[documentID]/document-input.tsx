@@ -30,7 +30,10 @@ export const DocumentInput = ({ title, id }: DocumentInputProps) => {
         setIsPending(true);
         mutate({ id, title: newValue })
             .then(() => toast.success("Document updated"))
-            .catch(() => toast.error("Something went wrong"))
+            .catch(() => {
+                toast.error("Something went wrong")
+                setIsError(true)
+            })
             .finally(() => setIsPending(false))
     })
 
